@@ -46,9 +46,9 @@ svg {
     fill: yellow;
 }
 
-.light.selected path {
+.light.selected path, .light.clickable path {
     stroke: blue;
-    stroke-width: 0.5;
+    stroke-width: 0.2;
     animation: select 0.1s;
 }
 @keyframes select {
@@ -154,6 +154,10 @@ hover_description game =
                         _ -> "Click to toggle every "++(ordinal d)++" light"
                 else if d == 0 then
                     "Now click another light"
+                else if clickable_divides game h then
+                    case d of
+                        1 -> "Not all of the lights are in the same state"
+                        _ -> "Not all of the "++(ordinal d)++" lights are in the same state"
                 else
                     (toString d)++" doesn't divide "++(toString (size game.circle))
         (_,NoSelection) -> "Click a light to start toggling"
@@ -179,8 +183,39 @@ circle_diff circle start i =
 clickable game i =
     case game.selection of 
         NoSelection -> False
-        Selected selected -> (selected /= i) && ((size game.circle) % (circle_diff game.circle selected i) == 0)
+        Selected selected -> 
+            let
+                d = (circle_diff game.circle selected i)
+            in
+                if d == 0 then False else let
+                    similar = List.map Tuple.second <| List.filter (\(i,l) -> (circle_diff game.circle selected i)%d==0) (List.indexedMap (\i -> \l -> (i,l)) game.circle)
+                    all_same = List.foldl 
+                        (\l -> \(mlast,ok) -> case mlast of
+                            Nothing -> (Just l,True)
+                            Just last -> (Just last, ok && l==last)
+                        ) 
+                        (Nothing,True) similar |> Tuple.second
+                in
+                    (selected /= i) && ((size game.circle) % d == 0) && all_same
 
+clickable_divides game i =
+    case game.selection of 
+        NoSelection -> False
+        Selected selected -> 
+            let
+                d = (circle_diff game.circle selected i)
+            in
+                (selected /= i) && ((size game.circle) % d == 0)
+
+hover_would_change game i =
+    case (game.hover,game.selection) of
+        (Just h, Selected selected) ->
+            let
+                n = size game.circle
+                d = circle_diff game.circle selected h
+            in
+                if d==0 then False else n%d==0 && (circle_diff game.circle selected i)%d == 0 
+        _ -> False
 
 view_circle_segment : Game -> Int -> Light -> Html Msg
 view_circle_segment game i light =
@@ -209,7 +244,7 @@ view_circle_segment game i light =
     in
         g 
             [
-                classList [("light",True), ("selected",selected), ("on",on), ("clickable", clickable game i)], 
+                classList [("light",True), ("selected",selected), ("on",on), ("clickable", hover_would_change game i)], 
                 onClick (Click i),
                 onMouseOver (SetHover i),
                 onMouseOut ClearHover

@@ -9794,26 +9794,92 @@ var _user$project$Main$clickable = F2(
 		if (_p1.ctor === 'NoSelection') {
 			return false;
 		} else {
-			var _p2 = _p1._0;
-			return (!_elm_lang$core$Native_Utils.eq(_p2, i)) && _elm_lang$core$Native_Utils.eq(
+			var _p8 = _p1._0;
+			var d = A3(_user$project$Main$circle_diff, game.circle, _p8, i);
+			if (_elm_lang$core$Native_Utils.eq(d, 0)) {
+				return false;
+			} else {
+				var similar = A2(
+					_elm_lang$core$List$map,
+					_elm_lang$core$Tuple$second,
+					A2(
+						_elm_lang$core$List$filter,
+						function (_p2) {
+							var _p3 = _p2;
+							return _elm_lang$core$Native_Utils.eq(
+								A2(
+									_elm_lang$core$Basics_ops['%'],
+									A3(_user$project$Main$circle_diff, game.circle, _p8, _p3._0),
+									d),
+								0);
+						},
+						A2(
+							_elm_lang$core$List$indexedMap,
+							F2(
+								function (i, l) {
+									return {ctor: '_Tuple2', _0: i, _1: l};
+								}),
+							game.circle)));
+				var all_same = _elm_lang$core$Tuple$second(
+					A3(
+						_elm_lang$core$List$foldl,
+						F2(
+							function (l, _p4) {
+								var _p5 = _p4;
+								var _p6 = _p5._0;
+								if (_p6.ctor === 'Nothing') {
+									return {
+										ctor: '_Tuple2',
+										_0: _elm_lang$core$Maybe$Just(l),
+										_1: true
+									};
+								} else {
+									var _p7 = _p6._0;
+									return {
+										ctor: '_Tuple2',
+										_0: _elm_lang$core$Maybe$Just(_p7),
+										_1: _p5._1 && _elm_lang$core$Native_Utils.eq(l, _p7)
+									};
+								}
+							}),
+						{ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: true},
+						similar));
+				return (!_elm_lang$core$Native_Utils.eq(_p8, i)) && (_elm_lang$core$Native_Utils.eq(
+					A2(
+						_elm_lang$core$Basics_ops['%'],
+						_user$project$Main$size(game.circle),
+						d),
+					0) && all_same);
+			}
+		}
+	});
+var _user$project$Main$clickable_divides = F2(
+	function (game, i) {
+		var _p9 = game.selection;
+		if (_p9.ctor === 'NoSelection') {
+			return false;
+		} else {
+			var _p10 = _p9._0;
+			var d = A3(_user$project$Main$circle_diff, game.circle, _p10, i);
+			return (!_elm_lang$core$Native_Utils.eq(_p10, i)) && _elm_lang$core$Native_Utils.eq(
 				A2(
 					_elm_lang$core$Basics_ops['%'],
 					_user$project$Main$size(game.circle),
-					A3(_user$project$Main$circle_diff, game.circle, _p2, i)),
+					d),
 				0);
 		}
 	});
 var _user$project$Main$hover_description = function (game) {
-	var _p3 = {ctor: '_Tuple2', _0: game.hover, _1: game.selection};
-	if (_p3._1.ctor === 'NoSelection') {
+	var _p11 = {ctor: '_Tuple2', _0: game.hover, _1: game.selection};
+	if (_p11._1.ctor === 'NoSelection') {
 		return 'Click a light to start toggling';
 	} else {
-		if (_p3._0.ctor === 'Just') {
-			var _p5 = _p3._0._0;
-			var d = A3(_user$project$Main$circle_diff, game.circle, _p3._1._0, _p5);
-			if (A2(_user$project$Main$clickable, game, _p5)) {
-				var _p4 = d;
-				if (_p4 === 1) {
+		if (_p11._0.ctor === 'Just') {
+			var _p14 = _p11._0._0;
+			var d = A3(_user$project$Main$circle_diff, game.circle, _p11._1._0, _p14);
+			if (A2(_user$project$Main$clickable, game, _p14)) {
+				var _p12 = d;
+				if (_p12 === 1) {
 					return 'Click to toggle every light';
 				} else {
 					return A2(
@@ -9828,14 +9894,29 @@ var _user$project$Main$hover_description = function (game) {
 				if (_elm_lang$core$Native_Utils.eq(d, 0)) {
 					return 'Now click another light';
 				} else {
-					return A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(d),
-						A2(
+					if (A2(_user$project$Main$clickable_divides, game, _p14)) {
+						var _p13 = d;
+						if (_p13 === 1) {
+							return 'Not all of the lights are in the same state';
+						} else {
+							return A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Not all of the ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_user$project$Main$ordinal(d),
+									' lights are in the same state'));
+						}
+					} else {
+						return A2(
 							_elm_lang$core$Basics_ops['++'],
-							' doesn\'t divide ',
-							_elm_lang$core$Basics$toString(
-								_user$project$Main$size(game.circle))));
+							_elm_lang$core$Basics$toString(d),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								' doesn\'t divide ',
+								_elm_lang$core$Basics$toString(
+									_user$project$Main$size(game.circle))));
+					}
 				}
 			}
 		} else {
@@ -9843,7 +9924,26 @@ var _user$project$Main$hover_description = function (game) {
 		}
 	}
 };
-var _user$project$Main$css = '\nhtml {\n    font-size: 16px;\n    font-family: sans-serif;\n}\nmain {\n    padding: 1rem;\n    text-align: center;\n}\nfooter {\n    margin-top: 4rem;\n}\nsvg {\n    max-width: 100vw;\n    max-height: 70vh;\n}\n\n.light path {\n    stroke-width: 0;\n    stroke: #555;\n    fill: black;\n    transition: fill 1s;\n}\n\n.light.on path {\n    fill: yellow;\n}\n\n.light.selected path {\n    stroke: blue;\n    stroke-width: 0.5;\n    animation: select 0.1s;\n}\n@keyframes select {\n    from {\n        stroke-width: 0.2;\n    }\n}\n\n';
+var _user$project$Main$hover_would_change = F2(
+	function (game, i) {
+		var _p15 = {ctor: '_Tuple2', _0: game.hover, _1: game.selection};
+		if (((_p15.ctor === '_Tuple2') && (_p15._0.ctor === 'Just')) && (_p15._1.ctor === 'Selected')) {
+			var _p16 = _p15._1._0;
+			var d = A3(_user$project$Main$circle_diff, game.circle, _p16, _p15._0._0);
+			var n = _user$project$Main$size(game.circle);
+			return _elm_lang$core$Native_Utils.eq(d, 0) ? false : (_elm_lang$core$Native_Utils.eq(
+				A2(_elm_lang$core$Basics_ops['%'], n, d),
+				0) && _elm_lang$core$Native_Utils.eq(
+				A2(
+					_elm_lang$core$Basics_ops['%'],
+					A3(_user$project$Main$circle_diff, game.circle, _p16, i),
+					d),
+				0));
+		} else {
+			return false;
+		}
+	});
+var _user$project$Main$css = '\nhtml {\n    font-size: 16px;\n    font-family: sans-serif;\n}\nmain {\n    padding: 1rem;\n    text-align: center;\n}\nfooter {\n    margin-top: 4rem;\n}\nsvg {\n    max-width: 100vw;\n    max-height: 70vh;\n}\n\n.light path {\n    stroke-width: 0;\n    stroke: #555;\n    fill: black;\n    transition: fill 1s;\n}\n\n.light.on path {\n    fill: yellow;\n}\n\n.light.selected path, .light.clickable path {\n    stroke: blue;\n    stroke-width: 0.2;\n    animation: select 0.1s;\n}\n@keyframes select {\n    from {\n        stroke-width: 0.2;\n    }\n}\n\n';
 var _user$project$Main$stylesheet = function (css) {
 	return A3(
 		_elm_lang$html$Html$node,
@@ -9873,8 +9973,8 @@ var _user$project$Main$initCircle = function (n) {
 	};
 };
 var _user$project$Main$toggle = function (light) {
-	var _p6 = light;
-	if (_p6.ctor === 'On') {
+	var _p17 = light;
+	if (_p17.ctor === 'On') {
 		return _user$project$Main$Off;
 	} else {
 		return _user$project$Main$On;
@@ -9989,7 +10089,7 @@ var _user$project$Main$view_circle_segment = F3(
 									_0: {
 										ctor: '_Tuple2',
 										_0: 'clickable',
-										_1: A2(_user$project$Main$clickable, game, i)
+										_1: A2(_user$project$Main$hover_would_change, game, i)
 									},
 									_1: {ctor: '[]'}
 								}
@@ -10071,12 +10171,12 @@ var _user$project$Main$view = function (game) {
 														_1: {
 															ctor: '::',
 															_0: _elm_lang$html$Html_Events$onInput(
-																function (_p7) {
+																function (_p18) {
 																	return _user$project$Main$SetSize(
 																		A2(
 																			_elm_lang$core$Result$withDefault,
 																			6,
-																			_elm_lang$core$String$toInt(_p7)));
+																			_elm_lang$core$String$toInt(_p18)));
 																}),
 															_1: {ctor: '[]'}
 														}
@@ -10148,30 +10248,30 @@ var _user$project$Main$update = F2(
 	function (msg, game) {
 		return _user$project$Main$noCmd(
 			function () {
-				var _p8 = msg;
-				switch (_p8.ctor) {
+				var _p19 = msg;
+				switch (_p19.ctor) {
 					case 'Click':
-						var _p11 = _p8._0;
-						var _p9 = game.selection;
-						if (_p9.ctor === 'NoSelection') {
+						var _p22 = _p19._0;
+						var _p20 = game.selection;
+						if (_p20.ctor === 'NoSelection') {
 							return _elm_lang$core$Native_Utils.update(
 								game,
 								{
-									selection: _user$project$Main$Selected(_p11)
+									selection: _user$project$Main$Selected(_p22)
 								});
 						} else {
-							var _p10 = _p9._0;
-							if (_elm_lang$core$Native_Utils.eq(_p11, _p10)) {
+							var _p21 = _p20._0;
+							if (_elm_lang$core$Native_Utils.eq(_p22, _p21)) {
 								return _elm_lang$core$Native_Utils.update(
 									game,
 									{selection: _user$project$Main$NoSelection});
 							} else {
-								if (A2(_user$project$Main$clickable, game, _p11)) {
+								if (A2(_user$project$Main$clickable, game, _p22)) {
 									var game2 = A3(
 										_user$project$Main$toggle_circle,
 										game,
-										_p10,
-										A3(_user$project$Main$circle_diff, game.circle, _p10, _p11));
+										_p21,
+										A3(_user$project$Main$circle_diff, game.circle, _p21, _p22));
 									return _elm_lang$core$Native_Utils.update(
 										game2,
 										{selection: _user$project$Main$NoSelection});
@@ -10184,14 +10284,14 @@ var _user$project$Main$update = F2(
 						return _elm_lang$core$Native_Utils.update(
 							game,
 							{
-								circle: _user$project$Main$initCircle(_p8._0),
+								circle: _user$project$Main$initCircle(_p19._0),
 								selection: _user$project$Main$NoSelection
 							});
 					case 'SetHover':
 						return _elm_lang$core$Native_Utils.update(
 							game,
 							{
-								hover: _elm_lang$core$Maybe$Just(_p8._0)
+								hover: _elm_lang$core$Maybe$Just(_p19._0)
 							});
 					default:
 						return _elm_lang$core$Native_Utils.update(
@@ -10205,7 +10305,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 		init: {ctor: '_Tuple2', _0: _user$project$Main$initGame, _1: _elm_lang$core$Platform_Cmd$none},
 		view: _user$project$Main$view,
 		update: _user$project$Main$update,
-		subscriptions: function (_p12) {
+		subscriptions: function (_p23) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
