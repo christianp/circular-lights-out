@@ -9805,7 +9805,7 @@ var _user$project$Main$hover_description = function (game) {
 		}
 	}
 };
-var _user$project$Main$css = '\nhtml {\n    font-size: 16px;\n    font-family: sans-serif;\n}\nmain {\n    padding: 1rem;\n    text-align: center;\n}\nsvg {\n    max-width: 100vw;\n    max-height: 70vh;\n}\n\n.light path {\n    stroke-width: 0;\n    stroke: #555;\n    fill: black;\n    transition: fill 1s;\n}\n\n.light.on path {\n    fill: yellow;\n}\n\n.light.selected path {\n    stroke: blue;\n    stroke-width: 0.5;\n    animation: select 0.1s;\n}\n@keyframes select {\n    from {\n        stroke-width: 0.2;\n    }\n}\n\n';
+var _user$project$Main$css = '\nhtml {\n    font-size: 16px;\n    font-family: sans-serif;\n}\nmain {\n    padding: 1rem;\n    text-align: center;\n}\nfooter {\n    margin-top: 4rem;\n}\nsvg {\n    max-width: 100vw;\n    max-height: 70vh;\n}\n\n.light path {\n    stroke-width: 0;\n    stroke: #555;\n    fill: black;\n    transition: fill 1s;\n}\n\n.light.on path {\n    fill: yellow;\n}\n\n.light.selected path {\n    stroke: blue;\n    stroke-width: 0.5;\n    animation: select 0.1s;\n}\n@keyframes select {\n    from {\n        stroke-width: 0.2;\n    }\n}\n\n';
 var _user$project$Main$stylesheet = function (css) {
 	return A3(
 		_elm_lang$html$Html$node,
@@ -10094,7 +10094,40 @@ var _user$project$Main$view = function (game) {
 									}),
 								_1: {ctor: '[]'}
 							}),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$footer,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$p,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('By '),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$a,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$href('http://somethingorotherwhatever.com'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Christian Lawson-Perfect'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}

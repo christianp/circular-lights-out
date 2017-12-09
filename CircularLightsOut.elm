@@ -27,6 +27,9 @@ main {
     padding: 1rem;
     text-align: center;
 }
+footer {
+    margin-top: 4rem;
+}
 svg {
     max-width: 100vw;
     max-height: 70vh;
@@ -135,6 +138,9 @@ view game =
             ],
             section [] [
                 p [] [Html.text <| hover_description game]
+            ],
+            footer [] [
+                p [] [Html.text "By ", Html.a [Html.Attributes.href "http://somethingorotherwhatever.com"] [Html.text "Christian Lawson-Perfect"]]
             ]
         ]
 
