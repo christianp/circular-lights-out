@@ -9813,29 +9813,30 @@ var _user$project$Main$hover_description = function (game) {
 			var d = A3(_user$project$Main$circle_diff, game.circle, _p3._1._0, _p5);
 			if (A2(_user$project$Main$clickable, game, _p5)) {
 				var _p4 = d;
-				switch (_p4) {
-					case 0:
-						return 'Now click another light';
-					case 1:
-						return 'Click to toggle every light';
-					default:
-						return A2(
+				if (_p4 === 1) {
+					return 'Click to toggle every light';
+				} else {
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'Click to toggle every ',
+						A2(
 							_elm_lang$core$Basics_ops['++'],
-							'Click to toggle every ',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								_user$project$Main$ordinal(d),
-								' light'));
+							_user$project$Main$ordinal(d),
+							' light'));
 				}
 			} else {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(d),
-					A2(
+				if (_elm_lang$core$Native_Utils.eq(d, 0)) {
+					return 'Now click another light';
+				} else {
+					return A2(
 						_elm_lang$core$Basics_ops['++'],
-						' doesn\'t divide ',
-						_elm_lang$core$Basics$toString(
-							_user$project$Main$size(game.circle))));
+						_elm_lang$core$Basics$toString(d),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' doesn\'t divide ',
+							_elm_lang$core$Basics$toString(
+								_user$project$Main$size(game.circle))));
+				}
 			}
 		} else {
 			return 'Now click another light';

@@ -150,9 +150,10 @@ hover_description game =
             in
                 if clickable game h then
                     case d of
-                        0 -> "Now click another light"
                         1 -> "Click to toggle every light"
                         _ -> "Click to toggle every "++(ordinal d)++" light"
+                else if d == 0 then
+                    "Now click another light"
                 else
                     (toString d)++" doesn't divide "++(toString (size game.circle))
         (_,NoSelection) -> "Click a light to start toggling"
