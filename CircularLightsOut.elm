@@ -165,11 +165,12 @@ hover_description game =
 
 ordinal n =
     let s = toString n in (++) s <|
-        case (n%10) of
-            1 -> "st"
-            2 -> "nd"
-            3 -> "rd"
-            _ -> "th"
+        if n%100 >=10 && n%100<20 then "th" else
+            case (n%10) of
+                1 -> "st"
+                2 -> "nd"
+                3 -> "rd"
+                _ -> "th"
 
 classList classes = class <| String.join " " (List.map Tuple.first <| List.filter Tuple.second classes)
 
