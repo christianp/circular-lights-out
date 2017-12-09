@@ -138,9 +138,6 @@ view game =
             ],
             section [] [
                 p [] [Html.text <| hover_description game]
-            ],
-            footer [] [
-                p [] [Html.text "By ", Html.a [Html.Attributes.href "http://somethingorotherwhatever.com"] [Html.text "Christian Lawson-Perfect"]]
             ]
         ]
 
