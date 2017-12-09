@@ -9765,16 +9765,24 @@ var _user$project$Main$ordinal = function (n) {
 			}),
 		s,
 		function () {
-			var _p0 = A2(_elm_lang$core$Basics_ops['%'], n, 10);
-			switch (_p0) {
-				case 1:
-					return 'st';
-				case 2:
-					return 'nd';
-				case 3:
-					return 'rd';
-				default:
-					return 'th';
+			if ((_elm_lang$core$Native_Utils.cmp(
+				A2(_elm_lang$core$Basics_ops['%'], n, 100),
+				10) > -1) && (_elm_lang$core$Native_Utils.cmp(
+				A2(_elm_lang$core$Basics_ops['%'], n, 100),
+				20) < 0)) {
+				return 'th';
+			} else {
+				var _p0 = A2(_elm_lang$core$Basics_ops['%'], n, 10);
+				switch (_p0) {
+					case 1:
+						return 'st';
+					case 2:
+						return 'nd';
+					case 3:
+						return 'rd';
+					default:
+						return 'th';
+				}
 			}
 		}());
 };
